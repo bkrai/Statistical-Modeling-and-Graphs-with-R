@@ -1,0 +1,59 @@
+#Week-13
+# Lecture video: https://youtu.be/5PqWx2drQO4
+
+# Library
+library(dplyr)
+library(ggplot2)
+library(forecast)
+library(lubridate)
+library(quantmod)
+library(xts)
+library(PerformanceAnalytics)
+
+#Time series data & plots
+data("AirPassengers")
+AP <- AirPassengers
+plot(AP)
+
+# Log transform
+AP <- log(AP)
+plot(AP)
+lag.plot(AP, lags=6, do.lines=F)
+acf(AP)
+pacf(AP)
+
+# Decomposition 
+decomp <- decompose(AP)
+plot(decomp)
+
+# ARIMA - Autoregressive Integrated Moving Average
+model <- auto.arima(AP)
+acf(model$residuals)
+pacf(model$residuals)
+
+# Box-Ljung test
+Box.test(model$residuals, lag=20, type="Ljung-Box")
+
+# Residual plot
+hist(model$residuals,
+     col = "lightblue",
+     xlab = "Error",
+     main = "Histogram of Residuals",
+     freq = FALSE)
+lines(density(model$residuals))
+
+# Forecast
+f <- forecast(model, 7)
+autoplot(f) 
+
+# Example-2: Apple daily prices
+getSymbols("AAPL", 
+           from = "2015-01-01", 
+           to = "2019-12-31")
+chartSeries(AAPL)
+data <- AAPL$AAPL.Close
+plot(data)
+
+#Forecast
+f <- forecast(model, 7)
+autoplot(f) 
