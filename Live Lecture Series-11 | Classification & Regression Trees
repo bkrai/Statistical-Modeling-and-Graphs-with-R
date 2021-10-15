@@ -1,0 +1,64 @@
+#Week-11
+# Video: https://youtu.be/6SMrjEwFiQY
+library(DAAG)
+library(party)
+library(rpart)
+library(rpart.plot)
+library(mlbench)
+library(pROC)
+library(tree)
+
+# 1. Classification Tree 
+str(spam7)  
+mydata <- spam7
+
+# Split data
+set.seed(1234)
+ind <- sample(2, nrow(mydata), replace = T, prob = c(0.5, 0.5))
+train <- mydata[ind == 1,]
+test <- mydata[ind == 2,]
+
+# Tree
+tree <- rpart(yesno ~., data = train)
+rpart.plot(tree)
+printcp(tree)
+plotcp(tree)
+
+# Confusion matrix -train
+p <- predict(tree, train, type = 'class')
+confusionMatrix(p, train$yesno)
+
+# ROC
+p1 <- predict(tree, test, type = 'prob')
+p1 <- p1[,2]
+r <- multiclass.roc(test$yesno, p1, percent = TRUE)
+roc <- r[['rocs']]
+r1 <- roc[[1]]
+plot.roc(r1,
+         print.auc=TRUE, 
+         auc.polygon=TRUE, 
+         grid=c(0.1, 0.2),
+         grid.col=c("green", "red"), 
+         max.auc.polygon=TRUE,
+         auc.polygon.col="lightblue", 
+         print.thres=TRUE, 
+         main= 'ROC Curve')
+
+# 2. Regression Tree 
+data('BostonHousing')
+mydata <- BostonHousing
+
+# Split data
+set.seed(1234)
+ind <- sample(2, nrow(mydata), replace = T, prob = c(0.5, 0.5))
+train <- mydata[ind == 1,]
+test <- mydata[ind == 2,]
+
+# regression tree
+tree <- rpart(medv ~., data = train)
+rpart.plot(tree)
+printcp(tree)
+plotcp(tree)
+
+# Predict 
+p <- predict(tree, train)
