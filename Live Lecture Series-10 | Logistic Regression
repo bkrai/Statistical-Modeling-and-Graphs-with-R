@@ -1,0 +1,69 @@
+#Week-10
+# Video: https://youtu.be/ftjNuPkPQB4
+library(DAAG)
+library(datasets)
+library(ggplot2)
+library(dplyr)
+library(psych)
+library(caret)
+library(pROC)
+library(nnet)
+
+# Data
+mydata <- read.csv('binary.csv')
+
+# Split data
+set.seed(1234)
+ind <- sample(2, nrow(mydata), replace = T, prob = c(0.8, 0.2))
+train <- mydata[ind == 1,]
+test <- mydata[ind == 2,]
+
+# Logistic regression
+m <- glm(admit~. , data = train, family = 'binomial' )
+
+# ROC
+p1 <- predict(m, train, type = 'response')
+r <- multiclass.roc(train$admit, p1, percent = TRUE)
+roc <- r[['rocs']]
+r1 <- roc[[1]]
+plot.roc(r1)
+
+#Best threshold
+coords(r1, "best", ret="threshold", transpose = FALSE) 
+
+# Why logistic regression?  
+gpa <- runif(500, 3, 3.6)
+gpa <- append(gpa, runif(500, 3.4, 4))
+outcome <- rep(0, 500)
+outcome <- append(outcome, rep(1, 500))
+data <- data.frame(gpa, outcome)
+
+
+data %>% ggplot(aes(x = gpa, y = factor(outcome), fill = factor(outcome))) +
+  geom_boxplot() +
+  ggtitle('Box plot: admitted Vs rejected',
+          'Simulated data') 
+
+data %>% 
+  ggplot(aes(x=gpa, y=outcome)) +
+  geom_point() 
+
+# Multinomial  
+mydata <- read.csv('CTG.csv')
+mydata$NSP <- relevel(mydata$NSP, ref = '1')
+
+# Split data
+set.seed(1234)
+ind <- sample(2, nrow(mydata), replace = T, prob = c(0.8, 0.2))
+train <- mydata[ind == 1,]
+test <- mydata[ind == 2,]
+
+# Model
+m <- multinom(NSP~ . , data = train)
+
+#2-tailed z test
+z <- summary(m)$coefficients/summary(m)$standard.errors
+(1 - pnorm(abs(z), 0, 1)) * 2
+
+# Predict
+p <- predict(m, train, type = 'class')
