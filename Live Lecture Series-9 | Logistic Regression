@@ -1,0 +1,25 @@
+#Week-9
+# Video: https://youtu.be/8AH3xfbgYkY
+library(DAAG)
+library(datasets)
+library(ggplot2)
+library(dplyr)
+library(psych)
+library(caret)
+library(pROC)
+
+# Read data
+mydata <- read.csv('binary.csv')
+
+# Split data
+set.seed(1234)
+ind <- sample(2, nrow(mydata), replace = T, prob = c(0.8, 0.2))
+train <- mydata[ind == 1,]
+test <- mydata[ind == 2,]
+
+# Logistic regression
+m <- glm(admit~. , data = train, family = 'binomial' )
+summary(m)
+
+# Predictions 
+p1 <- predict(m, train, type = 'response')
