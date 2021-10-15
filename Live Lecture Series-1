@@ -1,0 +1,83 @@
+# Week-1
+
+# Data
+x <- 10
+y <- 5
+x + y
+
+# Data vectors
+x <- 10:20
+y <- 45:55
+x + y
+
+# Patterned Data
+seq(from = 5, to = 25, by = 4)
+rep(c(2, 3, 5), 3)
+c(rep('F', 3), rep('M', 2))
+
+# Data Frame
+g <- c(95, 100, 75, 85, 90)
+n <- c('Ana', 'Sam', 'Ash', 'Beth', 'Don')
+mydata <- data.frame(n, g)
+mydata
+
+# Functions
+names(mydata) <- c('Name', 'Grade')
+mydata
+str(mydata)
+dim(mydata)
+summary(mydata)
+
+# Data and functions
+data('iris')
+str(iris)
+head(iris, 3)
+tail(iris)
+summary(iris)
+sd(iris$Sepal.Length)
+
+# Pie Chart
+tab <- table(iris$Species)
+tab
+pie(tab, main = 'Pie Chart for Species', col = rainbow(3))
+
+# Bar Plot
+barplot(tab, main = 'Bar Plot for Species', col = rainbow(3), ylab = 'Count')
+
+# Histogram
+hist(iris$Sepal.Length,
+    col = 'green',
+    breaks = 11,
+    main = 'Histogram of Sepal Length',
+    xlab = 'Sepal Length')
+    
+# Scatter Plot
+str(iris)
+plot(Sepal.Length ~ Sepal.Width, iris)
+pairs(iris[-5])
+
+# Libraries
+library(psych)
+pairs.panels(iris[-5], cex.cor = 0.5)
+
+# library
+library(DAAG)
+data('rainforest')
+str(rainforest)
+summary(rainforest)
+
+# Missing Data
+mean(rainforest$wood, na.rm = T)
+
+data('science')
+str(science)
+summary(science)
+
+science[!complete.cases(science),]
+dim(science)
+
+new <- na.omit(science)
+dim(new)
+
+summary(new)
+
