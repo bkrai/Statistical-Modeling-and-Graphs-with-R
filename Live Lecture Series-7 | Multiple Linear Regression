@@ -1,0 +1,42 @@
+#Week-7
+#Video: https://youtu.be/cW59Yh_GfNk
+library(DAAG)
+library(ggplot2)
+library(psych)
+library(MASS)
+
+# Book example
+str(allbacks)
+ggplot(allbacks, aes(x=volume, y=weight, col = cover)) +
+  geom_point() 
+
+pairs.panels(allbacks[1:3])
+
+#MLR
+m <- lm(weight ~ volume + area, allbacks)
+summary(m)
+
+#CI for coefficients
+confint(m)
+
+# MLR without intercept
+m <- lm(weight ~ -1 + volume + area, allbacks)
+summary(m)
+
+#1. Irish Hill Races
+?nihills
+str(nihills)
+pairs.panels(nihills)
+
+m <- lm(log(time) ~ log(dist) + log(climb), nihills)
+summary(m)
+
+#Mouse brain weight
+str(litters)
+pairs.panels(litters)
+summary(lm(brainwt ~ lsize + bodywt, litters))
+
+#Influence on the regression coefficients
+m <- lm(weight ~ volume + area, allbacks)
+summary(m)
+dfbetas(m)
