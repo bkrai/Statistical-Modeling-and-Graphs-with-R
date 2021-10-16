@@ -1,0 +1,43 @@
+#Week-6
+#Video: https://youtu.be/6kxGDxn7ZME
+library(DAAG)
+library(caret)
+library(mlbench)
+library(TeachingDemos)
+
+# SEs & CIs
+m1 <- lm(depression ~ weight,  roller)
+
+se <- predict(m1, roller, se.fit = T)
+se$se.fit  
+
+qt(.975, 8) 
+predict(m1, roller, interval = 'confidence')
+predict(m1, roller, interval = 'prediction')
+
+# demos
+put.points.demo(roller$weight, roller$depression, lsline = T)
+
+# Resampling - Bootstrap 
+data('BostonHousing')
+str(BostonHousing)
+plot(medv ~ lstat, BostonHousing)
+m2 <- train(log(medv) ~ lstat, 
+            BostonHousing,
+            method = 'lm')
+
+# Resampling - Crossvalidation
+c <- trainControl(method = "cv",
+                  number = 5)
+m3 <- train(log(medv) ~ lstat, 
+            BostonHousing,
+            method = 'lm',
+            trControl = c)
+
+# Data Partition
+ind <- createDataPartition(BostonHousing$medv, p = 0.7, list = F)
+training <- BostonHousing[ind,]
+testing <- BostonHousing[-ind,]
+
+# Transformation
+bc <- boxcox(medv ~ lstat, data = BostonHousing)
