@@ -8,8 +8,8 @@ library(psych)
 library(caret)
 library(pROC)
 
-# Read data
-mydata <- read.csv('binary.csv')
+# Read binary.csv data file
+mydata <- read.csv('https://raw.githubusercontent.com/bkrai/Statistical-Modeling-and-Graphs-with-R/main/binary.csv')
 
 # Split data
 set.seed(1234)
