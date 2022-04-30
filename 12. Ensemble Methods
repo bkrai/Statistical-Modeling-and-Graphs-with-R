@@ -79,7 +79,7 @@ sqrt(mean((test$medv - bo)^2))
 cor(test$medv, bo) ^2
 
 # Classification 
-mydata <- read.csv('CTG.csv', header = T)
+mydata <- read.csv('https://raw.githubusercontent.com/bkrai/Statistical-Modeling-and-Graphs-with-R/main/Cardiotocographic.csv', header = T)
 mydata$NSP <- as.factor(mydata$NSP)
 set.seed(1234) 
 ind <- sample(2, nrow(mydata), replace = T, prob = c(0.5, 0.5))
