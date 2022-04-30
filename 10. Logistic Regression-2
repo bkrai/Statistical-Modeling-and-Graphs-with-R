@@ -10,7 +10,7 @@ library(pROC)
 library(nnet)
 
 # Data
-mydata <- read.csv('binary.csv')
+mydata <- read.csv('https://raw.githubusercontent.com/bkrai/Statistical-Modeling-and-Graphs-with-R/main/binary.csv')
 
 # Split data
 set.seed(1234)
@@ -49,7 +49,7 @@ data %>%
   geom_point() 
 
 # Multinomial  
-mydata <- read.csv('CTG.csv')
+mydata <- read.csv('https://raw.githubusercontent.com/bkrai/Statistical-Modeling-and-Graphs-with-R/main/Cardiotocographic.csv')
 mydata$NSP <- relevel(mydata$NSP, ref = '1')
 
 # Split data
