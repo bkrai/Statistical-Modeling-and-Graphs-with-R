@@ -1,0 +1,34 @@
+#Week-5 
+library(DAAG)
+library(dplyr)
+library(ggplot2)
+
+# Simple linear regression
+str(roller)
+roller %>% ggplot(aes(x= weight, y = depression)) +
+  geom_point() +
+  geom_smooth(method = 'lm', se = 0) +
+  ggtitle('Depression Vs Roller Weight',
+          'Source: roller data from DAAG')
+
+m1 <- lm(depression ~ weight, roller)
+summary(m1)
+par(mfrow = c(2,2))
+plot(m1)
+par(mfrow = c(1,1))
+qreference(residuals(m1), nrep=8, nrows=2)
+anova(m1)
+
+# Without intercept
+roller %>% ggplot(aes(x= weight, y = depression)) +
+  geom_point() +
+  geom_smooth(method = 'lm', se = 0, formula=y~x-1) +
+  ggtitle('Depression Vs Roller Weight',
+          'Source: roller data from DAAG')
+m1 <- lm(depression ~ -1 + weight, roller)
+summary(m1)
+
+par(mfrow = c(2,2))
+plot(m1)
+anova(m1)
+par(mfrow = c(1,1))
