@@ -1,0 +1,56 @@
+# Normal distribution
+z <- pretty(c(-5,5), 100)
+ht <- dnorm(z)
+plot(z, ht, type = 'l')
+
+pnorm(-2)   
+qnorm(.95)   
+
+# t distribution
+t <- pretty(c(-5, 5), 100)
+ht <- dt(t, 3)
+plot(t, ht, type = 'l')
+
+pt(-2, 3)
+qt(.95, 3)
+
+# Simulation
+x <- rnorm(10)
+qqnorm(x)
+qqline(x)
+
+# Loop
+N <- 4
+par(mfrow = c(2,2))
+for (i in 1:N) {
+  x <- rnorm(10)
+  qqnorm(x)
+  qqline(x)
+}
+
+# Loop-2
+par(mfrow = c(1,1))
+M <- 50  # to generate 50 means
+AVG <- numeric(M)
+for (i in 1:M) {AVG[i] <- mean(rt(30, 5))}
+AVG
+hist(AVG)
+
+# Simulations
+n <- rnorm(1000)
+u <- runif(1000)
+e <- rexp(1000)
+t <- rt(1000, 3)
+par(mfrow = c(2,2))
+hist(n)
+hist(u)
+hist(e)
+hist(t)
+
+# Normality
+par(mfrow = c(1,1))
+x <- rnorm(10)
+qqnorm(x)
+
+# Normality test
+shapiro.test(x)
